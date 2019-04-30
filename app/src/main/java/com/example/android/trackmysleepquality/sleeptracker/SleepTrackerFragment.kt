@@ -29,6 +29,7 @@ import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_sleep_tracker.view.*
 
 /**
  * A fragment with buttons to record start and end times for sleep, which are saved in
@@ -97,11 +98,12 @@ class SleepTrackerFragment : Fragment() {
             }
         })
 
-        // TODO (04) Create a new SleepNightAdapter variable,
-        // and bind it to the RecyclerView’s Adapter.
+        val adapter = SleepNightAdapter()
+        binding.sleepList.adapter = adapter
 
-        // TODO (05) Create an observer on sleepTrackerViewModel.nights that tells
-        // the Adapter when there is new data.
+        sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer { nights ->
+            nights?.let { adapter.data = it }
+        })
 
         return binding.root
     }
